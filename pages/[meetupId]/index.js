@@ -18,14 +18,14 @@ const MeetupDetails = (props)=>{
 }
 
 export default MeetupDetails;
-export const getStaticPaths = async (filter, options)=>{
+export const getStaticPaths = async ()=>{
     const client = await MongoClient.connect('mongodb+srv://rbqhr5452:5WpghXo2KK0ewlvK@react.rkihizs.mongodb.net/meetups?retryWrites=true&w=majority');
     const db = client.db();
     const meetupsCollection = db.collection('meetups');
     const meetups = await meetupsCollection.find({}, {_id: 1}).toArray();
     await client.close();
     return {
-        fallback:false,
+        fallback:'blocking',
         paths:meetups.map(data=>({params:{meetupId:data._id.toString()}}))
     }
 }
